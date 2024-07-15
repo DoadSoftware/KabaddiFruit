@@ -1,0 +1,97 @@
+@charset "UTF-8";
+  html, body {
+   overflow: hidden;
+   margin: 0;
+   padding: 0;
+  }
+
+  .table-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 2px solid transparent; 
+    overflow: auto; 
+    margin-top: 4px; /* Ensure consistent spacing between containers */
+    margin-bottom: 4px; /* Decreased margin between containers */
+  }
+
+  .table-container table {
+    margin: 5px;
+  }
+  #tables {
+    max-height: 130px; 
+    overflow: hidden; 
+    box-shadow: 20px 10px 50px #9AA2A2;
+  }
+
+  #tables2 {
+    max-height: 470px; 
+    overflow: hidden; 
+    box-shadow: 20px 10px 50px #9AA2A2;
+  }
+
+  #tables3 {
+    max-height: 470px; 
+    overflow: hidden; 
+    box-shadow: 20px 10px 50px #9AA2A2;
+  }
+
+  .table {
+    table-layout: fixed; 
+    border-collapse: collapse; 
+    width: 100%; 
+  }
+
+  .table th, .table td {
+    text-align: center; 
+    vertical-align: middle; 
+    padding: 5px; 
+    white-space: normal; 
+  }
+
+  .content {
+    background-color: #F0F0F0;
+    color: #2E008B;
+    padding-top: 105px; /* Ensure content starts below the header */
+    padding-bottom: 4px; 
+    min-height: 100vh;
+  }
+
+  .header-container {
+    background-color: #0080FE;
+    color: white;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 10px;
+    left: 0;
+    width: calc(100% - 72px);
+    z-index: 1000; /* Ensure header is above other content */
+    margin-left: 34px;
+    box-shadow: 20px 10px 20px #9AA2A2;
+  }
+
+  .header-container img {
+    max-width: 140px;
+    max-height: 97px;
+    width: calc(100% - 40px);
+    margin-right: 10px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    
+  }
+
+  .header-container h2 {
+  	margin: 0;
+    font-family: 'Arial Black', sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 5.2em;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    white-space: nowrap;
+    margin-left: auto;
+    margin-right: 515px;
+  }
