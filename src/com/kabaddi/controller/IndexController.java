@@ -28,6 +28,7 @@ import com.kabaddi.model.Clock;
 import com.kabaddi.model.EventFile;
 import com.kabaddi.model.Match;
 import com.kabaddi.model.Player;
+import com.kabaddi.model.Team;
 import com.kabaddi.service.KabaddiService;
 import com.kabaddi.util.KabaddiFunctions;
 import com.kabaddi.util.KabaddiUtil;
@@ -44,6 +45,7 @@ public class IndexController
 	public static Configurations session_Configurations;
 	public static Clock session_clock = new Clock();
 	public static Match session_match;
+	public static Team hometeam ,awayTeam;
 	public static EventFile session_event;
 
 	@RequestMapping(value = {"/","/initialise"}, method={RequestMethod.GET,RequestMethod.POST}) 
@@ -53,7 +55,7 @@ public class IndexController
 			@Override
 		    public boolean accept(File pathname) {
 		        String name = pathname.getName().toLowerCase();
-		        return name.endsWith(".xml") && pathname.isFile();
+		        return name.endsWith(".json") && pathname.isFile();
 		    }
 		}));
 		
@@ -72,22 +74,32 @@ public class IndexController
 	public String commentatorPage(ModelMap model,
 			@RequestParam(value = "select_broadcaster", required = false, defaultValue = "") String selectBroadcaster,
 			@RequestParam(value = "selectedMatch", required = false, defaultValue = "") String selectedmatch) 
-					throws IllegalAccessException, InvocationTargetException, JAXBException, StreamReadException, DatabindException, IOException
+					throws Exception
 	{
 		session_Configurations = new Configurations(selectedmatch, selectBroadcaster);
 		
 		JAXBContext.newInstance(Configurations.class).createMarshaller().marshal(session_Configurations,
 				new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.CONFIGURATIONS_DIRECTORY + KabaddiUtil.FRUIT_XML));
 		
-		session_match = KabaddiFunctions.populateMatchVariables(kabaddiService, (Match) JAXBContext.newInstance(Match.class).createUnmarshaller()
-				.unmarshal(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.MATCHES_DIRECTORY + selectedmatch)));
+		session_match = KabaddiFunctions.populateMatchVariables(kabaddiService, new ObjectMapper().readValue
+				(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.MATCHES_DIRECTORY + selectedmatch),
+		        Match.class));	
 		
-		session_event = (EventFile) JAXBContext.newInstance(EventFile.class).createUnmarshaller().unmarshal(
-				new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.EVENT_DIRECTORY + selectedmatch));
+		 session_match.setHomeTeam(kabaddiService.getTeam(KabaddiUtil.TEAM, String.valueOf(session_match.getHomeTeamId())));
+		 session_match.setHomeTeam(kabaddiService.getTeam(KabaddiUtil.TEAM, String.valueOf(session_match.getAwayTeamId())));
+
+		session_event = new ObjectMapper().readValue(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.EVENT_DIRECTORY + 
+				selectedmatch), EventFile.class);
+
 		session_match.setEvents(session_event.getEvents());
 		// JSON file for match
-		session_match.setApi_Match(new ObjectMapper().readValue(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.DESTINATION_DIRECTORY +session_match.getMatchId() +"-in-match" 
-				+ KabaddiUtil.JSON_EXTENSION), Api_Match.class));
+//		session_match.setApi_Match(new ObjectMapper().readValue(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.DESTINATION_DIRECTORY +session_match.getMatchId() +"-in-match" 
+//				+ KabaddiUtil.JSON_EXTENSION), Api_Match.class));
+		
+		session_match.getApi_Match().setHomeTeam(session_match.getHomeTeam());
+	    session_match.getApi_Match().setAwayTeam(session_match.getAwayTeam());
+		 
+		KabaddiFunctions.setMatch(session_match.getApi_Match(), session_match);
 		model.addAttribute("session_match", session_match);
 		model.addAttribute("session_selected_broadcaster", session_Configurations.getBroadcaster());
 		
@@ -98,7 +110,7 @@ public class IndexController
 	public @ResponseBody String processHandballProcedures(
 			@RequestParam(value = "whatToProcess", required = false, defaultValue = "") String whatToProcess,
 			@RequestParam(value = "valueToProcess", required = false, defaultValue = "") String valueToProcess) 
-					throws IOException, IllegalAccessException, InvocationTargetException, JAXBException, ParseException
+					throws Exception
 	{	
 		switch (whatToProcess.toUpperCase()) {
 			
@@ -107,10 +119,14 @@ public class IndexController
 			if(session_match != null && !valueToProcess.equalsIgnoreCase(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(
 					new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.MATCHES_DIRECTORY + session_match.getMatchFileName()).lastModified()))) {
 				
-				session_match = KabaddiFunctions.populateMatchVariables(kabaddiService, (Match) JAXBContext.newInstance(Match.class).createUnmarshaller()
-						.unmarshal(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.MATCHES_DIRECTORY + session_match.getMatchFileName())));
-				session_event = (EventFile) JAXBContext.newInstance(EventFile.class).createUnmarshaller().unmarshal(
-						new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.EVENT_DIRECTORY + session_match.getMatchFileName()));
+				session_event = new ObjectMapper().readValue(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.EVENT_DIRECTORY + 
+						session_match.getMatchFileName()), EventFile.class);
+				session_match = new ObjectMapper().readValue(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.MATCHES_DIRECTORY + 
+						session_match.getMatchFileName()), Match.class);
+
+				session_match = KabaddiFunctions.populateMatchVariables(kabaddiService, new ObjectMapper().readValue
+						(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.MATCHES_DIRECTORY + session_match.getMatchFileName()),
+				        Match.class));	
 				session_match.setEvents(session_event.getEvents());
 			}
 			if (new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.CLOCK_JSON).exists()) {
@@ -122,9 +138,9 @@ public class IndexController
 			} else {
 			    System.err.println("Clock JSON file does not exist: " + new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.CLOCK_JSON).getAbsolutePath());
 			}
-		// JSON file for match
-			session_match.setApi_Match(new ObjectMapper().readValue(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.DESTINATION_DIRECTORY +session_match.getMatchId() +"-in-match" 
-					+ KabaddiUtil.JSON_EXTENSION), Api_Match.class));
+			session_match.getApi_Match().setHomeTeam(session_match.getHomeTeam());
+		    session_match.getApi_Match().setAwayTeam(session_match.getAwayTeam());
+			KabaddiFunctions.setMatch(session_match.getApi_Match(), session_match);
 			
 			return JSONObject.fromObject(session_match).toString();
 		default:

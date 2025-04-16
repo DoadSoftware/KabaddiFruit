@@ -1,5 +1,58 @@
 var homeColour='blue',awayColour='skyblue';awayTextColour='#000080',homeTextColour='white';
 var raids,doDie;
+function getColorStyles(colorName) {
+    // Clean and normalize the color name
+    const cleanedColor = colorName.trim().toLowerCase().replace(/\s+/g, '');
+
+    const predefinedColors = {
+        "navyblue": "navy",
+        "skyblue": "skyblue",
+        "lightblue": "lightblue",
+        "darkred": "darkred",
+        "limegreen": "limegreen",
+        "gray": "gray",
+        "aqua": "aqua",
+        "teal": "teal",
+        "deeppink": "deeppink",
+        "goldenrod": "goldenrod"
+    };
+
+    // Replace with predefined color if available
+    if (predefinedColors[cleanedColor]) {
+        colorName = predefinedColors[cleanedColor];
+    } else {
+        colorName = cleanedColor;
+    }
+
+    // Create a temporary element to resolve the color
+    const temp = document.createElement("div");
+    temp.style.color = colorName;
+    document.body.appendChild(temp);
+
+    const rgb = window.getComputedStyle(temp).color;
+    document.body.removeChild(temp);
+
+    const match = rgb.match(/\d+/g);
+    if (!match || match.length < 3) {
+        return { backgroundColor: colorName, textColor: "black" }; // fallback
+    }
+
+    const r = parseInt(match[0]);
+    const g = parseInt(match[1]);
+    const b = parseInt(match[2]);
+
+    // Calculate brightness
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    const textColor = brightness > 128 ? 'black' : 'white';
+
+    return {
+        backgroundColor: colorName,
+        textColor: textColor
+    };
+}
+
+
+
 function processWaitingButtonSpinner(whatToProcess) 
 {
 	switch (whatToProcess) {
@@ -1497,10 +1550,10 @@ function setDataInTableCells(dataToProcess) {
 		document.getElementById('awayscore').innerHTML = dataToProcess.awayTeamScore;
 				
 	    // Set data in Table 1
-	    document.getElementById('homeTeamName').innerHTML =dataToProcess.homeTeam.teamBadge;
-	    document.getElementById('awayTeamName').innerHTML = dataToProcess.awayTeam.teamBadge;
+	    document.getElementById('homeTeamName').innerHTML =dataToProcess.homeTeam.teamName1;
+	    document.getElementById('awayTeamName').innerHTML = dataToProcess.awayTeam.teamName1;
 	    
-	    document.getElementById('tournament').innerHTML = 'UPKL 2024' + ' <br>' + dataToProcess.matchIdent + ' <br>';
+	    document.getElementById('tournament').innerHTML = dataToProcess.tournament+ ' <br>' + dataToProcess.matchIdent + ' <br>';
 	    
 	    document.getElementById('home_allOut').innerHTML = dataToProcess.api_Match.homeTeamStats.points[0].all_out_points;
 	    document.getElementById('away_allOut').innerHTML = dataToProcess.api_Match.awayTeamStats.points[0].all_out_points;
@@ -1542,29 +1595,13 @@ function LastFiveRaids(dataToProcess) {
     return { homeRaids, awayRaids };
 }
 function Colours(dataToProcess){
-	// Array of team names with corresponding colors
-	const teamColors = [
-	    { name: "AWADH", home: { color: '#FF7518', text: 'black' }, away: { color: '#FF7518', text: 'black' } },
-	    { name: "MIRZAPUR", home: { color: '#00CDFE', text: 'black' }, away: { color: '#00CDFE', text: 'black' } },
-	    { name: "LUCKNOW", home: { color: '#FF4AA4', text: 'white' }, away: { color: '#FF4AA4', text: 'white' } },
-	    { name: "KASHI", home: { color: '#FFC000', text: 'black' }, away: { color: '#FFC000', text: 'black' } },
-	    { name: "BRIJ", home: { color: '#38E038', text: 'black' }, away: { color: '#38E038', text: 'black' } },
-	    { name: "YAMUNA", home: { color: '#FF3131', text: 'white' }, away: { color: '#FF3131', text: 'white' } },
-	    { name: "SANGAM", home: { color: '#088F8F', text: 'white' }, away: { color: '#088F8F', text: 'white' } },
-	    { name: "NOIDA", home: { color: '#1434A4', text: 'white' }, away: { color: '#1434A4', text: 'white' } }
-	];
+	const styles = getColorStyles(dataToProcess.homeTeamJerseyColor.replace(/\s+/g, ''));
+	homeColour = styles.backgroundColor;
+	homeTextColour = styles.textColor;
 	
-	// Loop through teamColors array
-	teamColors.forEach(team => {
-	    if (dataToProcess.api_Match.homeTeam.teamName1.includes(team.name)) {
-	        homeColour = team.home.color;
-	        homeTextColour = team.home.text;
-	    }
-	    if (dataToProcess.api_Match.awayTeam.teamName1.includes(team.name)) {
-	        awayColour = team.away.color;
-	        awayTextColour = team.away.text;
-	    }
-	});
+	const style = getColorStyles(dataToProcess.awayTeamJerseyColor.replace(/\s+/g, ''));
+	awayColour = style.backgroundColor;
+	awayTextColour = style.textColor;
 }
 function processMatchData(dataToProcess) {
     var HomeRaids = [], AwayRaids = [];
