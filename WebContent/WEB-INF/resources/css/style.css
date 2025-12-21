@@ -74,7 +74,7 @@
   }
 
   .header-container img {
-    max-width: 140px;
+    max-width: 90px;
     max-height: 97px;
     width: calc(100% - 40px);
     margin-right: 10px;
@@ -88,7 +88,7 @@
   	margin: 0;
     font-family: 'Arial Black', sans-serif;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    font-size: 5.2em;
+    font-size: 4.5em;
     text-transform: uppercase;
     letter-spacing: 3px;
     white-space: nowrap;

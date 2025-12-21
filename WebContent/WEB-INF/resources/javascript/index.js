@@ -524,11 +524,15 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
             dataToProcess.homeSquad.forEach(function(hm) {
                 if (parseInt(hm.playerAPIId) === plyr.playerId && !playerAPIIds.has(hm.playerAPIId)) {
                     if (plyr.player_on_court != null && (plyr.player_on_court === true || plyr.player_on_court === "true")) {
-                        var player = hm.jersey_number + " " + hm.full_name + "," + plyr.raids[0].totalRaids + "," + plyr.raids[0].successfulRaids + " / " + plyr.raids[0].emptyRaids + " / " + plyr.raids[0].unsuccessfulRaids + "," + plyr.points[0].raid_points[0].totalRaidPoints + "," + plyr.tackles[0].successfulTackles + " / " + plyr.tackles[0].totalTackles + "," + plyr.points[0].tackle_points[0].totalTacklePoints;
+                        var player = hm.jersey_number + " " + hm.full_name + "," + plyr.raids[0].totalRaids + "," + plyr.raids[0].successfulRaids + " / " + 
+                        	plyr.raids[0].emptyRaids + " / " + plyr.raids[0].unsuccessfulRaids + "," + plyr.points[0].raid_points[0].totalRaidPoints + "," + 
+                        	plyr.tackles[0].successfulTackles + " / " + plyr.tackles[0].totalTackles + "," + plyr.points[0].tackle_points[0].totalTacklePoints;
                         team.push(player);
                         playerAPIIds.add(hm.playerAPIId);
                     } else if (plyr.player_revival_order != null && plyr.player_revival_order.trim().length > 0) {
-                        var player = hm.jersey_number + " " + hm.full_name + "," + plyr.raids[0].totalRaids + "," + plyr.raids[0].successfulRaids + " / " + plyr.raids[0].emptyRaids + " / " + plyr.raids[0].unsuccessfulRaids + "," + plyr.points[0].raid_points[0].totalRaidPoints + "," + plyr.tackles[0].successfulTackles + " / " + plyr.tackles[0].totalTackles + "," + plyr.points[0].tackle_points[0].totalTacklePoints;
+                        var player = hm.jersey_number + " " + hm.full_name + "," + plyr.raids[0].totalRaids + "," + plyr.raids[0].successfulRaids + " / " + 
+                        	plyr.raids[0].emptyRaids + " / " + plyr.raids[0].unsuccessfulRaids + "," + plyr.points[0].raid_points[0].totalRaidPoints + "," + 
+                        	plyr.tackles[0].successfulTackles + " / " + plyr.tackles[0].totalTackles + "," + plyr.points[0].tackle_points[0].totalTacklePoints;
                         team.push(player);
                         playerAPIIds.add(hm.playerAPIId);
                     }
@@ -683,7 +687,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
         td1.style.fontWeight = 'bold';
         td1.style.width = '50%'; 
         td1.style.backgroundColor = homeColour
-        td1.innerHTML = 'SUCCESS'; 
+        td1.innerHTML = 'SUCC/TOTAL'; 
         tr1_3.appendChild(td1);
 
         var td2 = document.createElement('td');
@@ -870,7 +874,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
 	th4_1.style.width = '100%';
 	th4_1.style.backgroundColor = homeColour
 	th4_1.setAttribute('colspan', 3);
-	th4_1.innerHTML = `RAIDS${"&nbsp;".repeat(35)}LAST FIVE RAIDS : ${raids.homeRaids}`;
+	th4_1.innerHTML = `RAIDS${"&nbsp;".repeat(35)}LAST 5 RAIDS : ${raids.homeRaids}`;
 	tr4_1.appendChild(th4_1);
 	thead4.appendChild(tr4_1);
 	
@@ -886,7 +890,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
 	th4_2.style.fontWeight = 'bold';
 	th4_2.style.width = '33.33%';
 	th4_2.style.backgroundColor = homeColour
-	th4_2.innerHTML = 'NUMBER';
+	th4_2.innerHTML = 'COUNT';
 	th4_2.style.borderRight = 'none';
 	tr4_2.appendChild(th4_2);
 	
@@ -1015,7 +1019,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
 
     document.getElementById('homecourt').innerHTML = document.getElementById('homecourt').innerHTML +'<span style="font-size: 33px;">'+
     dataToProcess.api_Match.homeTeamStats.no_of_players_on_court+'</span>';
-    document.getElementById('homeName').innerHTML ='<br>'+dataToProcess.homeTeam.teamBadge.split('').join('<br>');
+    document.getElementById('homeName').innerHTML ='<br>'+dataToProcess.homeTeam.teamName4.split('').join('<br>');
 }
 function table3(dataToProcess) {
     $('#tables3').empty(); 
@@ -1158,7 +1162,7 @@ console.log(team);
 	    td1.style.backgroundColor = awayColour
         td1.style.fontWeight = 'bold';
         td1.style.width = '50%'; 
-        td1.innerHTML = 'SUCCESS'; 
+        td1.innerHTML = 'SUCC/TOTAL'; 
         tr1_3.appendChild(td1);
 
         var td2 = document.createElement('td');
@@ -1372,7 +1376,7 @@ console.log(team);
 	th4_1.style.fontWeight = 'bold';
 	th4_1.style.width = '100%';
 	th4_1.setAttribute('colspan', 3);
-    th4_1.innerHTML = `RAIDS${"&nbsp;".repeat(35)}LAST FIVE RAIDS : ${raids.awayRaids}`;
+    th4_1.innerHTML = `RAIDS${"&nbsp;".repeat(35)}LAST 5 RAIDS : ${raids.awayRaids}`;
 	tr4_1.appendChild(th4_1);
 	thead4.appendChild(tr4_1);
 	
@@ -1389,7 +1393,7 @@ console.log(team);
     th4_2.style.fontSize = '24px';
 	th4_2.style.fontWeight = 'bold';
 	th4_2.style.width = '33.33%';
-	th4_2.innerHTML = 'NUMBER';
+	th4_2.innerHTML = 'COUNT';
 	th4_2.style.borderRight = 'none';
 	tr4_2.appendChild(th4_2);
 	
@@ -1522,7 +1526,7 @@ console.log(team);
     //document.getElementById('away_others').innerHTML += dataToProcess.api_Match.awayTeamStats.no_of_players_on_court;
 
     document.getElementById('awaycourt').innerHTML += '<span style="font-size: 33px;">' + dataToProcess.api_Match.awayTeamStats.no_of_players_on_court + '</span>';
-    document.getElementById('awayName').innerHTML = '<br>' + dataToProcess.awayTeam.teamBadge.split('').join('<br>');
+    document.getElementById('awayName').innerHTML = '<br>' + dataToProcess.awayTeam.teamName4.split('').join('<br>');
 }
 function setDataInTableCells(dataToProcess) {
 		
@@ -1561,8 +1565,8 @@ function setDataInTableCells(dataToProcess) {
 	    document.getElementById('home_extra').innerHTML = dataToProcess.api_Match.homeTeamStats.points[0].extra_points;
 	    document.getElementById('away_extra').innerHTML = dataToProcess.api_Match.awayTeamStats.points[0].extra_points;
 	    
-	    document.getElementById('home_bonus').innerHTML = dataToProcess.api_Match.homeTeamStats.do_or_die[0].bonusPoints;
-	    document.getElementById('away_bonus').innerHTML = dataToProcess.api_Match.awayTeamStats.do_or_die[0].bonusPoints;
+	    document.getElementById('home_bonus').innerHTML = dataToProcess.api_Match.homeTeamStats.points[0].raid_points[0].raidBounsPoints;
+	    document.getElementById('away_bonus').innerHTML = dataToProcess.api_Match.awayTeamStats.points[0].raid_points[0].raidBounsPoints;
 	    
   
 }

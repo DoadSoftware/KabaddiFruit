@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kabaddi.model.Api_Match;
+import com.kabaddi.model.Api_pre_match;
 import com.kabaddi.model.Clock;
 import com.kabaddi.model.EventFile;
 import com.kabaddi.model.Match;
@@ -47,6 +49,7 @@ public class IndexController
 	public static Match session_match;
 	public static Team hometeam ,awayTeam;
 	public static EventFile session_event;
+	public static String session_selected_broadcaster;
 
 	@RequestMapping(value = {"/","/initialise"}, method={RequestMethod.GET,RequestMethod.POST}) 
 	public String initialisePage(ModelMap model) throws JAXBException  
@@ -95,12 +98,34 @@ public class IndexController
 		// JSON file for match
 //		session_match.setApi_Match(new ObjectMapper().readValue(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.DESTINATION_DIRECTORY +session_match.getMatchId() +"-in-match" 
 //				+ KabaddiUtil.JSON_EXTENSION), Api_Match.class));
+		session_selected_broadcaster = selectBroadcaster;
 		
-		session_match.getApi_Match().setHomeTeam(session_match.getHomeTeam());
-	    session_match.getApi_Match().setAwayTeam(session_match.getAwayTeam());
-		 
-		KabaddiFunctions.setMatch(session_match.getApi_Match(), session_match);
+		switch (selectBroadcaster.toUpperCase()) {
+		case "GIPKL":
+			session_match.getApi_Match().setHomeTeam(session_match.getHomeTeam());
+		    session_match.getApi_Match().setAwayTeam(session_match.getAwayTeam());
+			 
+			KabaddiFunctions.setMatch(session_match.getApi_Match(), session_match);
+			
+			break;
+		default:
+			KabaddiFunctions.setMatchApi(session_match.getApi_Match(), session_match);
+			if(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.DESTINATION_DIRECTORY + "pre-match_2m" + KabaddiUtil.JSON_EXTENSION).exists()) {
+				ObjectMapper objectMapper = new ObjectMapper();
+				
+				try {
+		            File file = new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.DESTINATION_DIRECTORY + "pre-match_2m" + KabaddiUtil.JSON_EXTENSION);
+		            List<Api_pre_match> apiPreMatchList = objectMapper.readValue(file, new TypeReference<List<Api_pre_match>>() {});
+		            session_match.setApi_PreMatch(apiPreMatchList);
+		            
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
+			}
+			break;
+		}
 		model.addAttribute("session_match", session_match);
+		model.addAttribute("session_selected_broadcaster", session_selected_broadcaster);
 		model.addAttribute("session_selected_broadcaster", session_Configurations.getBroadcaster());
 		
 		return "fruit";
@@ -138,10 +163,30 @@ public class IndexController
 			} else {
 			    System.err.println("Clock JSON file does not exist: " + new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.CLOCK_JSON).getAbsolutePath());
 			}
-			session_match.getApi_Match().setHomeTeam(session_match.getHomeTeam());
-		    session_match.getApi_Match().setAwayTeam(session_match.getAwayTeam());
-			KabaddiFunctions.setMatch(session_match.getApi_Match(), session_match);
 			
+			switch (session_selected_broadcaster.toUpperCase()) {
+			case "GIPKL":
+				session_match.getApi_Match().setHomeTeam(session_match.getHomeTeam());
+			    session_match.getApi_Match().setAwayTeam(session_match.getAwayTeam());
+				KabaddiFunctions.setMatch(session_match.getApi_Match(), session_match);
+				
+				break;
+			default:
+				KabaddiFunctions.setMatchApi(session_match.getApi_Match(), session_match);
+				if(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.DESTINATION_DIRECTORY + "pre-match_2m" + KabaddiUtil.JSON_EXTENSION).exists()) {
+					ObjectMapper objectMapper = new ObjectMapper();
+					
+					try {
+			            File file = new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.DESTINATION_DIRECTORY + "pre-match_2m" + KabaddiUtil.JSON_EXTENSION);
+			            List<Api_pre_match> apiPreMatchList = objectMapper.readValue(file, new TypeReference<List<Api_pre_match>>() {});
+			            session_match.setApi_PreMatch(apiPreMatchList);
+			            
+			        } catch (IOException e) {
+			            e.printStackTrace();
+			        }
+				}
+				break;
+			}
 			return JSONObject.fromObject(session_match).toString();
 		default:
 			return JSONObject.fromObject(session_match).toString();
