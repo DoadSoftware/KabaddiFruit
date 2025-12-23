@@ -130,391 +130,249 @@ function checkEmpty(inputBox,textToShow) {
 	return true;	
 }
 
-function table1(dataToProcess){
-	 $('#tables').empty();
-    var tableHeight = "130px";
-	
-    // First Table
+function table1(dataToProcess) {
+
+    $('#tables').empty();
+
+    // ---------- SMALL SIZE SETTINGS ----------
+    const smallRowBorder = "1px solid #F0F0F0";
+    const smallHeight = "28px";     // <<< SMALL HEIGHT
+    const smallFont = "12px";       // <<< SMALL FONT
+
+    // SET CONTAINER TO AUTO HEIGHT (NO SCROLLER)
+    var container = document.getElementById("tables");
+    container.style.maxHeight = "none";
+    container.style.overflow = "hidden";
+    container.style.display = "flex";
+    container.style.justifyContent = "space-between";
+    container.style.gap = "4px";
+
+    // =========================================
+    // TABLE 1 – TEAM + SCORE
+    // =========================================
+
     var table1 = document.createElement('table');
     table1.id = 'table1';
-    table1.style.height = tableHeight;
-    table1.style.width = "50%";
-    table1.style.marginTop = "-10px";
-    table1.style.borderColor = "transparent";
-    table1.className = 'table table-bordered fixed-size-table';
-	table1.style.tableLayout = 'fixed'; 
+    table1.style.width = "32%";
+
     var thead1 = document.createElement('thead');
     var tbody1 = document.createElement('tbody');
-    var tr1_1 = document.createElement('tr');
-    var tr1_2 = document.createElement('tr');
-   
-    // First Table: First Row (headers)
-    var th1_1 = document.createElement('th');
-    th1_1.scope = 'col';
-    th1_1.style.color = homeTextColour;
-    th1_1.style.textAlign = 'center';
-    th1_1.style.fontSize = '30px';
-    th1_1.style.lineHeight = '1.3'; 
-	th1_1.style.whiteSpace = 'nowrap'; 
-    th1_1.style.fontWeight = 'bold';
-    th1_1.style.fontWeight = 'bold';
-    th1_1.style.backgroundColor = homeColour
-    th1_1.style.borderColor = "transparent";
-    th1_1.style.width = '50%';
-    th1_1.style.height = '50%';
-    th1_1.style.borderRight = 'none'; 
-    th1_1.id = 'homeTeamName';
-    th1_1.innerHTML = ' <br>';
-    tr1_1.appendChild(th1_1);
 
-    var th1_2 = document.createElement('th');
-    th1_2.scope = 'col';
-    th1_2.style.color = awayTextColour;
-    th1_2.style.textAlign = 'center';
-    th1_2.style.fontSize = '30px';
-    th1_2.style.lineHeight = '1.1'; 
-	th1_2.style.whiteSpace = 'nowrap'; 
-    th1_2.style.fontWeight = 'bold';
-    th1_2.style.fontWeight = 'bold';
-    th1_2.style.borderColor = "transparent"
-    th1_2.style.backgroundColor = awayColour
-    th1_2.style.width = '50%';
-    th1_2.style.height = '50%';
-    th1_2.style.borderRight = 'none'; 
-    th1_2.id = 'awayTeamName';
-    th1_2.innerHTML = '<br>';
-    tr1_2.appendChild(th1_2);
+    // Row 1 – Team Names
+    var tr_names = document.createElement('tr');
 
-   // First Table: Second Row (data)
-    var td1_1 = document.createElement('th');
-    td1_1.style.textAlign = 'center';
-    td1_1.style.fontSize = '38px';
-    td1_1.style.lineHeight = '1.3'; 
-	td1_1.style.whiteSpace = 'nowrap'; 
-    td1_1.style.fontWeight = 'bold';
-    td1_1.style.color = homeTextColour;
-    td1_1.style.textAlign = 'center';
-    td1_1.style.fontWeight = 'bold';
-    td1_1.style.backgroundColor = homeColour
-    td1_1.style.width = '50%';
-    td1_1.style.height = '50%'
-    td1_1.id = 'homescore';
-    td1_1.style.borderLeft = 'none';
-    td1_1.innerHTML = '<br>'; 
-    tr1_1.appendChild(td1_1);
+    var th_home = document.createElement('th');
+    th_home.id = 'homeTeamName';
+    th_home.innerHTML = "<br>";
+    Object.assign(th_home.style, {
+        backgroundColor: homeColour,
+        color: homeTextColour,
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: smallFont,
+        height: smallHeight
+    });
+    tr_names.appendChild(th_home);
 
-    var td1_2 = document.createElement('th');
-    td1_2.style.textAlign = 'center';
-    td1_2.style.fontSize = '38px';
-    td1_2.style.lineHeight = '1.1'; 
-	td1_2.style.whiteSpace = 'nowrap'; 
-    td1_2.style.fontWeight = 'bold';
-    td1_2.style.color = awayTextColour;
-    td1_2.style.textAlign = 'center';
-    td1_2.style.fontWeight = 'bold';
-    td1_2.style.width = '50%';
-    td1_2.style.height = '50%'
-    td1_2.style.backgroundColor = awayColour
-    td1_2.style.borderLeft = 'none';
-    td1_2.id = 'awayscore';
-    td1_2.innerHTML = '<br>'; 
-    tr1_2.appendChild(td1_2);
+    var th_away = document.createElement('th');
+    th_away.id = 'awayTeamName';
+    th_away.innerHTML = "<br>";
+    Object.assign(th_away.style, {
+        backgroundColor: awayColour,
+        color: awayTextColour,
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: smallFont,
+        height: smallHeight
+    });
+    tr_names.appendChild(th_away);
 
-    thead1.appendChild(tr1_1);
-    tbody1.appendChild(tr1_2);
+    thead1.appendChild(tr_names);
+
+    // Row 2 – Scores
+    var tr_scores = document.createElement('tr');
+
+    var td_homeScore = document.createElement('td');
+    td_homeScore.id = 'homescore';
+    td_homeScore.innerHTML = "<br>";
+    Object.assign(td_homeScore.style, {
+        backgroundColor: homeColour,
+        color: homeTextColour,
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: smallFont,
+        height: smallHeight
+    });
+    tr_scores.appendChild(td_homeScore);
+
+    var td_awayScore = document.createElement('td');
+    td_awayScore.id = 'awayscore';
+    td_awayScore.innerHTML = "<br>";
+    Object.assign(td_awayScore.style, {
+        backgroundColor: awayColour,
+        color: awayTextColour,
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: smallFont,
+        height: smallHeight
+    });
+    tr_scores.appendChild(td_awayScore);
+
+    tbody1.appendChild(tr_scores);
+
     table1.appendChild(thead1);
     table1.appendChild(tbody1);
 
-    // Second Table
+    // =========================================
+    // TABLE 2 – TOURNAMENT
+    // =========================================
+
     var table2 = document.createElement('table');
-	table2.id = 'table2';
-	table2.style.height = "200px"; 
-	table2.style.width = "20%";
-	table2.style.marginTop = "-10px";
-	table2.style.border = "4px solid #F0F0F0";
-	table2.className = 'table table-bordered fixed-size-table';
-	table2.style.tableLayout = 'fixed'; 
-	var thead2 = document.createElement('thead');
-	var tbody2 = document.createElement('tbody');
-	var tr2_1 = document.createElement('tr');
-	
-	// Second Table: First Row (header and spanning cell)
-	var th2_1_1 = document.createElement('th');
-	th2_1_1.scope = 'col';
-	th2_1_1.style.color = 'white';
-	th2_1_1.style.textAlign = 'center';
-	th2_1_1.style.lineHeight = '1.1'; 
-	th2_1_1.style.whiteSpace = 'nowrap'; 
-    th2_1_1.style.fontWeight = 'bold';
-	th2_1_1.style.fontSize = '30px';
-	th2_1_1.style.fontWeight = 'bold';
-	th2_1_1.style.borderColor = "transparent";
-	th2_1_1.style.wordWrap = "break-word"; 
-	th2_1_1.style.overflow = "hidden"; 
-	th2_1_1.style.backgroundColor = '#636363'
-	th2_1_1.style.textOverflow = "hidden"; 
-	th2_1_1.style.width = '10%';
-	th2_1_1.style.height = '130px';
-	th2_1_1.innerHTML = '<br>';
-	th2_1_1.id = 'tournament';
-	th2_1_1.setAttribute('rowspan', 2); 
-	tr2_1.appendChild(th2_1_1);
-	
-	thead2.appendChild(tr2_1);
-	table2.appendChild(thead2);
-	table2.appendChild(tbody2);
-	
-	// Append table2 to the container
-	var tableContainer = document.getElementById('tables');
-		tableContainer.appendChild(table2);
-	// Third Table
-	var table3 = document.createElement('table');
-	table3.id = 'table3';
-	table3.style.height = '130px';
-	table3.style.width = "30%";
-	table3.style.border = "4px solid #F0F0F0";
-	table3.style.marginTop = "-10px";
-	table3.style.borderColor = "transparent";
-	table3.className = 'table table-bordered fixed-size-table';
-	table3.style.tableLayout = 'fixed'; 
-	var thead3 = document.createElement('thead');
-	var tbody3 = document.createElement('tbody');
-	var tr3_1 = document.createElement('tr');
-	var tr3_2 = document.createElement('tr');
-	var tr3_3 = document.createElement('tr');
+    table2.id = 'table2';
+    table2.style.width = "14%";
 
-	// Third Table: First Row (headers)
-	var th3_1 = document.createElement('td');
-	th3_1.scope = 'col';
-	th3_1.style.color = 'white';
-	th3_1.style.textAlign = 'center';
-	th3_1.style.border = "4px solid #F0F0F0";
-	th3_1.style.fontSize = '24px';
-	th3_1.style.lineHeight = '1.3'; 
-	th3_1.style.whiteSpace = 'nowrap';
-	th3_1.style.backgroundColor = '#636363'
-	th3_1.style.fontWeight = 'bold';
-	th3_1.style.width = '40%';
-	th3_1.innerHTML = 'ALL OUT';
-	tr3_1.appendChild(th3_1);
-	
-	var th3_2 = document.createElement('td');
-	th3_2.scope = 'col';
-	th3_2.style.color = homeTextColour;
-	th3_2.style.textAlign = 'center';
-	th3_2.style.lineHeight = '1.3'; 
-	th3_2.style.whiteSpace = 'nowrap';
-	th3_2.style.backgroundColor = homeColour
-	th3_2.style.border = "4px solid #F0F0F0";
-	th3_2.style.fontSize = '24px';
-	th3_2.style.fontWeight = 'bold';
-	th3_2.style.width = '33.33%';
-	th3_2.innerHTML = '<br>';
-	th3_2.id = 'home_allOut';
-	tr3_1.appendChild(th3_2);
-	
-	var th3_3 = document.createElement('td');
-	th3_3.scope = 'col';
-	th3_3.style.color = awayTextColour;
-	th3_3.style.textAlign = 'center';
-	th3_3.style.border = "4px solid #F0F0F0";
-	th3_3.style.fontSize = '24px';
-	th3_3.style.lineHeight = '1.3'; 
-	th3_3.style.whiteSpace = 'nowrap';
-	th3_3.style.fontWeight = 'bold';
-	th3_3.style.backgroundColor = awayColour
-	th3_3.style.width = '33.33%';
-	th3_3.innerHTML = '<br>';
-	th3_3.id = 'away_allOut';
-	tr3_1.appendChild(th3_3);
-	
-	// Third Table: Second Row (data)
-	var td3_1 = document.createElement('td');
-	td3_1.style.textAlign = 'center';
-	td3_1.style.color = 'white';
-	td3_1.style.border = "4px solid #F0F0F0";
-	td3_1.style.lineHeight = '1.1'; 
-	td3_1.style.whiteSpace = 'nowrap';
-	td3_1.style.fontSize = '24px';
-	td3_1.style.fontWeight = 'bold';
-	td3_1.style.backgroundColor = '#636363'
-	td3_1.style.width = '33.33%';
-	td3_1.style.height = '50%';
-	td3_1.innerHTML = 'EXTRAS'; 
-	tr3_2.appendChild(td3_1);
-	
-	var td3_2 = document.createElement('td');
-	td3_2.style.color = homeTextColour;
-	td3_2.style.textAlign = 'center';
-	td3_2.style.border = "4px solid #F0F0F0";
-	td3_2.style.fontSize = '24px';
-	td3_2.style.lineHeight = '1.1'; 
-	td3_2.style.whiteSpace = 'nowrap';
-	td3_2.style.fontWeight = 'bold';
-	td3_2.style.width = '33.33%';
-	td3_2.style.backgroundColor = homeColour
-	td3_2.id = 'home_extra';
-	td3_2.style.height = '50%';
-	td3_2.innerHTML = '<br>'; 
-	tr3_2.appendChild(td3_2);
-	
-	var td3_3 = document.createElement('td');
-	td3_3.style.color = awayTextColour;
-	td3_3.style.textAlign = 'center';
-	td3_3.style.fontSize = '24px';
-	td3_3.style.border = "4px solid #F0F0F0";
-	td3_3.style.lineHeight = '1.1'; 
-	td3_3.style.whiteSpace = 'nowrap';
-	td3_3.style.fontWeight = 'bold';
-	td3_3.style.width = '33.33%';
-	td3_3.style.backgroundColor = awayColour
-	td3_3.id = 'away_extra';
-	td3_3.style.height = '50%';
-	td3_3.innerHTML = '<br>'; 
-	tr3_2.appendChild(td3_3);
-	
-	// Third Table: Third Row (data)
-	var td3_4 = document.createElement('td');
-	td3_4.style.color = 'white';
-	td3_4.style.textAlign = 'center';
-	td3_4.style.fontSize = '24px';
-	td3_4.style.lineHeight = '1.1'; 
-	td3_4.style.border = "4px solid #F0F0F0";
-	td3_4.style.whiteSpace = 'nowrap';
-	td3_4.style.fontWeight = 'bold';
-	td3_4.style.backgroundColor = '#636363'
-	td3_4.style.width = '33.33%';
-	td3_4.style.height = '50%';
-	td3_4.innerHTML = 'BONUS'; 
-	tr3_3.appendChild(td3_4);
-	
-	var td3_5 = document.createElement('td');
-	td3_5.style.color = homeTextColour;
-	td3_5.style.textAlign = 'center';
-	td3_5.style.fontSize = '24px';
-	td3_5.style.border = "4px solid #F0F0F0";
-	td3_5.style.lineHeight = '1.1'; 
-	td3_5.style.whiteSpace = 'nowrap';
-	td3_5.style.fontWeight = 'bold';
-	td3_5.style.width = '33.33%';
-	td3_5.style.backgroundColor = homeColour
-	td3_5.id = 'home_bonus';
-	td3_5.style.height = '50%';
-	td3_5.innerHTML = '<br>'; 
-	tr3_3.appendChild(td3_5);
-	
-	var td3_6 = document.createElement('td');
-	td3_6.style.color = awayTextColour;
-	td3_6.style.textAlign = 'center';
-	td3_6.style.fontSize = '24px';
-	td3_6.style.border = "4px solid #F0F0F0";
-	td3_6.style.lineHeight = '1.1'; 
-	td3_6.style.whiteSpace = 'nowrap';
-	td3_6.style.fontWeight = 'bold';
-	td3_6.style.backgroundColor = awayColour
-	td3_6.style.width = '33.33%';
-	td3_6.id = 'away_bonus';
-	td3_6.style.height = '50%';
-	td3_6.innerHTML = '<br>'; 
-	tr3_3.appendChild(td3_6);
-	
-	thead3.appendChild(tr3_1);
-	tbody3.appendChild(tr3_2);
-	tbody3.appendChild(tr3_3);
-	table3.appendChild(thead3);
-	table3.appendChild(tbody3);
+    var rT = document.createElement('tr');
+    var th_tour = document.createElement('th');
+    th_tour.id = "tournament";
+    th_tour.innerHTML = "<br>";
+    th_tour.setAttribute("rowspan", 2);
 
+    Object.assign(th_tour.style, {
+        backgroundColor: "#636363",
+        color: "white",
+        textAlign: "center",
+        fontSize: smallFont,
+        fontWeight: "bold",
+        height: "56px",  // SMALL
+        border: smallRowBorder
+    });
 
+    rT.appendChild(th_tour);
+    table2.appendChild(rT);
 
-    // Fourth Table
+    // =========================================
+    // TABLE 3 – ALL OUT / EXTRAS / BONUS
+    // =========================================
+
+    var table3 = document.createElement('table');
+    table3.id = 'table3';
+    table3.style.width = "26%";
+
+    var tbody3 = document.createElement('tbody');
+
+    function makeRow(label, idH, idA) {
+        var r = document.createElement('tr');
+
+        var l = document.createElement('td');
+        l.innerHTML = label;
+        Object.assign(l.style, {
+            backgroundColor: "#636363",
+            color: "white",
+            textAlign: "center",
+            fontWeight: "bold",
+            border: smallRowBorder,
+            height: "25px",
+            fontSize: smallFont
+        });
+        r.appendChild(l);
+
+        var h = document.createElement('td');
+        h.id = idH;
+        h.innerHTML = "<br>";
+        Object.assign(h.style, {
+            backgroundColor: homeColour,
+            color: homeTextColour,
+            border: smallRowBorder,
+            textAlign: "center",
+            fontSize: smallFont
+        });
+        r.appendChild(h);
+
+        var a = document.createElement('td');
+        a.id = idA;
+        a.innerHTML = "<br>";
+        Object.assign(a.style, {
+            backgroundColor: awayColour,
+            color: awayTextColour,
+            border: smallRowBorder,
+            textAlign: "center",
+            fontSize: smallFont
+        });
+        r.appendChild(a);
+
+        return r;
+    }
+
+    tbody3.appendChild(makeRow("ALL OUT", "home_allOut", "away_allOut"));
+    tbody3.appendChild(makeRow("EXTRAS", "home_extra", "away_extra"));
+    tbody3.appendChild(makeRow("BONUS", "home_bonus", "away_bonus"));
+
+    table3.appendChild(tbody3);
+
+    // =========================================
+    // TABLE 4 – MATCH HALF + TIMER
+    // =========================================
+
     var table4 = document.createElement('table');
     table4.id = 'table4';
-    table4.style.height = tableHeight;
-    table4.style.width = "30%";
-    table4.style.marginTop = "-9px";
-    table4.style.borderColor = "transparent";
-    table4.className = 'table table-bordered fixed-size-table';
- 	table4.style.tableLayout = 'fixed'; 
-    var thead4 = document.createElement('thead');
+    table4.style.width = "18%";
+
     var tbody4 = document.createElement('tbody');
-    var tr4_1 = document.createElement('tr');
-    var tr4_2 = document.createElement('tr');
 
-    // Fourth Table: First Row (header and spanning cell)
-    var th4_1_1 = document.createElement('th');
-    th4_1_1.scope = 'col';
-    th4_1_1.style.color = 'white';
-    th4_1_1.style.textAlign = 'center';
-    th4_1_1.style.fontSize = '30px';
-    th4_1_1.style.lineHeight = '1.1'; 
-	th4_1_1.style.whiteSpace = 'nowrap';
-	th4_1_1.style.backgroundColor = '#636363'
-	th4_1_1.style.border = "4px solid #F0F0F0";
-    th4_1_1.style.fontWeight = 'bold';
-    th4_1_1.style.width = '50%';
-    th4_1_1.setAttribute('colspan', 2);
-    th4_1_1.id = 'match_half';
-    th4_1_1.innerHTML = '<br>';
-    tr4_1.appendChild(th4_1_1);
+    // HALF ROW
+    var hr = document.createElement('tr');
+    var half = document.createElement('td');
+    half.id = 'match_half';
+    half.innerHTML = "<br>";
+    half.colSpan = 2;
+    Object.assign(half.style, {
+        backgroundColor: "#636363",
+        color: "white",
+        textAlign: "center",
+        fontWeight: "bold",
+        border: smallRowBorder,
+        height: smallHeight,
+        fontSize: smallFont
+    });
+    hr.appendChild(half);
+    tbody4.appendChild(hr);
 
-    // Fourth Table: Second Row (data)
-    var td4_1 = document.createElement('td');
-    td4_1.style.textAlign = 'center';
-    td4_1.style.color = 'white';
-    td4_1.style.fontSize = '54px';
-    td4_1.style.fontWeight = 'bold';
-    td4_1.style.lineHeight = '1.1'; 
-	td4_1.style.whiteSpace = 'nowrap';
-	td4_1.style.backgroundColor = '#636363'
-	td4_1.style.border = "4px solid #F0F0F0";
-    td4_1.style.width = '50%';
-    td4_1.style.height = '50%';
-    td4_1.setAttribute('colspan', 2);
-    td4_1.id = 'clock_timer';
-    td4_1.innerHTML = '<br>'; 
-    tr4_2.appendChild(td4_1);
+    // CLOCK ROW
+    var tr_clock = document.createElement('tr');
+    var clock = document.createElement('td');
+    clock.id = 'clock_timer';
+    clock.innerHTML = "<br>";
+    clock.colSpan = 2;
+    Object.assign(clock.style, {
+        backgroundColor: "#636363",
+        color: "white",
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: "14px",
+        border: smallRowBorder,
+        height: smallHeight
+    });
+    tr_clock.appendChild(clock);
+    tbody4.appendChild(tr_clock);
 
-    thead4.appendChild(tr4_1);
-    tbody4.appendChild(tr4_2);
-    table4.appendChild(thead4);
     table4.appendChild(tbody4);
 
-    // Append tables to the container
-    var tableContainer = document.getElementById('tables');
-    tableContainer.appendChild(table1);
-    tableContainer.appendChild(table2);
-    tableContainer.appendChild(table3);
-    tableContainer.appendChild(table4);
-		var tableRowStyle = {
-		    width: '50%', 
-		    height: '50%', 
-		    border: '4px solid #F0F0F0' 
-		};
-	
-	// Applying styles to table rows for each table
-	function applyStylesToRows(tableId) {
-	    var table = document.getElementById(tableId);
-	    var rows = table.getElementsByTagName('tr');
-	    for (var i = 0; i < rows.length; i++) {
-	        var row = rows[i];
-	        Object.assign(row.style, tableRowStyle);
-	    }
-	}
-	
-	
-	applyStylesToRows('table1');
-	applyStylesToRows('table3');
-	applyStylesToRows('table4');
-	
-	tableContainer.appendChild(table1);
-	tableContainer.appendChild(table2);
-	tableContainer.appendChild(table3);
-	tableContainer.appendChild(table4);
-	setDataInTableCells(dataToProcess);
+    // =========================================
+    // ADD ALL TABLES
+    // =========================================
+    container.appendChild(table1);
+    container.appendChild(table2);
+    container.appendChild(table3);
+    container.appendChild(table4);
+
+    // FILL VALUES
+    setDataInTableCells(dataToProcess);
 }
+
+
 function table2(dataToProcess) {
     $('#tables2').empty();
-    var tableHeight = "400px";
+    var tableHeight = "280px";
 raids = LastFiveRaids(dataToProcess);
 var test = false, team = [], playerAPIIds = new Set();
 
@@ -630,7 +488,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
     // Table 2: Single cell
     var td2 = document.createElement('td');
     td2.style.textAlign = 'center';
-    td2.style.fontSize = '24px';
+    td2.style.fontSize = '13px';
     td2.style.fontWeight = 'bold';
     td2.style.color = homeTextColour;
     td2.style.backgroundColor = homeColour
@@ -665,7 +523,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
     th1_1.style.textAlign = 'center';
     th1_1.style.lineHeight = '1.3'; 
 	th1_1.style.whiteSpace = 'nowrap'; 
-    th1_1.style.fontSize = '24px';
+    th1_1.style.fontSize = '13px';
     th1_1.style.fontWeight = 'bold';
     th1_1.style.width = '70%';
     th1_1.style.backgroundColor = homeColour
@@ -683,7 +541,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
         td1.style.textAlign = 'center';
         td1.style.lineHeight = '1.1'; 
 		td1.style.whiteSpace = 'nowrap'; 
-	    td1.style.fontSize = '24px';
+	    td1.style.fontSize = '13px';
         td1.style.fontWeight = 'bold';
         td1.style.width = '50%'; 
         td1.style.backgroundColor = homeColour
@@ -696,7 +554,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
         td2.style.textAlign = 'center';
         td2.style.lineHeight = '1.1'; 
 		td2.style.whiteSpace = 'nowrap'; 
-	    td2.style.fontSize = '24px';
+	    td2.style.fontSize = '13px';
         td2.style.fontWeight = 'bold';
         td2.style.width = '50%';
         td2.style.backgroundColor = homeColour 
@@ -716,7 +574,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
         td1.style.textAlign = 'center';
 		td1.style.lineHeight = '1.1'; 
 		td1.style.whiteSpace = 'nowrap'; 
-	    td1.style.fontSize = '24px';
+	    td1.style.fontSize = '13px';
 	    td1.style.fontWeight = 'bold';
 	    td1.style.backgroundColor = homeColour
         td1.style.width = '30%'; 
@@ -730,7 +588,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
         td2.style.textAlign = 'center';
         td2.style.lineHeight = '1.1'; 
 		td2.style.whiteSpace = 'nowrap'; 
-	    td2.style.fontSize = '24px';
+	    td2.style.fontSize = '13px';
         td2.style.fontWeight = 'bold';
         td2.style.width = '30%'; 
         td2.style.backgroundColor = homeColour
@@ -782,7 +640,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
     th3_2.style.textAlign = 'center';
     th3_2.style.lineHeight = '1.1'; 
 	th3_2.style.whiteSpace = 'nowrap'; 
-    th3_2.style.fontSize = '24px';
+    th3_2.style.fontSize = '13px';
     th3_2.style.fontWeight = 'bold';
     th3_2.style.width = '33.33%';
     th3_2.innerHTML = 'RAIDS : ';
@@ -797,7 +655,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
     th3_3.style.textAlign = 'center';
     th3_3.style.lineHeight = '1.1'; 
 	th3_3.style.whiteSpace = 'nowrap'; 
-    th3_3.style.fontSize = '24px';
+    th3_3.style.fontSize = '13px';
     th3_3.style.fontWeight = 'bold';
     th3_3.style.width = '33.33%';
     th3_3.style.backgroundColor = homeColour
@@ -813,7 +671,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
     th3_4.style.textAlign = 'center';
     th3_4.style.lineHeight = '1.1'; 
 	th3_4.style.whiteSpace = 'nowrap'; 
-    th3_4.style.fontSize = '24px'; 
+    th3_4.style.fontSize = '13px'; 
     th3_4.style.fontWeight = 'bold';
     th3_4.style.width = '33.33%'; 
     th3_4.style.backgroundColor = homeColour
@@ -835,7 +693,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
         td3_1.style.textAlign = 'left';
         td3_1.style.lineHeight = '1.1'; 
     	td3_1.style.whiteSpace = 'nowrap'; 
-        td3_1.style.fontSize = '24px';
+        td3_1.style.fontSize = '13px';
         td3_1.style.fontWeight = 'bold';
         td3_1.style.width = '33.33%';
         td3_1.style.backgroundColor = homeColour
@@ -869,7 +727,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
 	th4_1.style.textAlign = 'center';
 	th4_1.style.lineHeight = '1.3'; 
 	th4_1.style.whiteSpace = 'nowrap'; 
-    th4_1.style.fontSize = '24px'; 
+    th4_1.style.fontSize = '13px'; 
 	th4_1.style.fontWeight = 'bold';
 	th4_1.style.width = '100%';
 	th4_1.style.backgroundColor = homeColour
@@ -886,7 +744,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
 	th4_2.style.color = homeTextColour;
 	th4_2.style.textAlign = 'center';
 	th4_2.style.lineHeight = '1.1'; 
-	th4_2.style.fontSize = '24px';
+	th4_2.style.fontSize = '13px';
 	th4_2.style.fontWeight = 'bold';
 	th4_2.style.width = '33.33%';
 	th4_2.style.backgroundColor = homeColour
@@ -900,7 +758,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
 	th4_3.style.textAlign = 'center';
 	th4_3.style.lineHeight = '1.1'; 
 	th4_3.style.whiteSpace = 'nowrap'; 
-    th4_3.style.fontSize = '24px';
+    th4_3.style.fontSize = '13px';
 	th4_3.style.fontWeight = 'bold';
 	th4_3.style.width = '33.33%';
 	th4_3.innerHTML = 'SUC/EMP/UN';
@@ -915,7 +773,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
 	th4_4.style.textAlign = 'center';
 	th4_4.style.lineHeight = '1.1'; 
 	th4_4.style.whiteSpace = 'nowrap'; 
-    th4_4.style.fontSize = '24px';
+    th4_4.style.fontSize = '13px';
 	th4_4.style.fontWeight = 'bold';
 	th4_4.style.width = '33.33%';
 	th4_4.style.backgroundColor = homeColour
@@ -937,7 +795,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
 	    td4_1.style.textAlign = 'center';
 	    td4_1.style.lineHeight = '1.1'; 
 		td4_1.style.whiteSpace = 'nowrap'; 
-	    td4_1.style.fontSize = '24px';
+	    td4_1.style.fontSize = '13px';
 	    td4_1.style.backgroundColor = homeColour
 	    td4_1.style.fontWeight = 'bold';
 	    td4_1.style.width = '33.33%';
@@ -953,7 +811,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
 	    td4_2.style.textAlign = 'center';
 	    td4_2.style.lineHeight = '1.1'; 
 		td4_2.style.whiteSpace = 'nowrap'; 
-	    td4_2.style.fontSize = '24px';
+	    td4_2.style.fontSize = '13px';
 	    td4_2.style.fontWeight = 'bold';
 	    td4_2.style.backgroundColor = homeColour
 	    td4_2.style.width = '33.33%';
@@ -969,7 +827,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
 	    td4_3.style.textAlign = 'center';
 	    td4_3.style.lineHeight = '1.1'; 
 		td4_3.style.whiteSpace = 'nowrap'; 
-	    td4_3.style.fontSize = '24px';
+	    td4_3.style.fontSize = '13px';
 	    td4_3.style.backgroundColor = homeColour
 	    td4_3.style.fontWeight = 'bold';
 	    td4_3.style.width = '33.33%';
@@ -997,7 +855,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
     // Table 2: Single cell
     var td5 = document.createElement('td');
     td5.style.textAlign = 'center';
-    td5.style.fontSize = '21px';
+    td5.style.fontSize = '13px';
     td5.style.fontWeight = 'bold';
     td5.style.color = 'black';
     td5.style.lineHeight = '1'; 
@@ -1118,7 +976,7 @@ if (!test && dataToProcess && dataToProcess.api_Match && dataToProcess.api_Match
 }
 console.log(team);
 
-	    var tableHeight = "400px";
+	    var tableHeight = "350px";
 	
 	    // Table 1: TACKLES
 	    var table1 = document.createElement('table');
@@ -1142,7 +1000,7 @@ console.log(team);
 	    th1_1.style.textAlign = 'center';
 	    th1_1.style.lineHeight = '1.3'; 
 		th1_1.style.whiteSpace = 'nowrap'; 
-	    th1_1.style.fontSize = '24px';
+	    th1_1.style.fontSize = '13px';
 	    th1_1.style.fontWeight = 'bold';
 	    th1_1.style.width = '100%';
 	    th1_1.style.backgroundColor = awayColour 
@@ -1158,7 +1016,7 @@ console.log(team);
         td1.style.textAlign = 'center';
         td1.style.lineHeight = '1.1'; 
 		td1.style.whiteSpace = 'nowrap'; 
-	    td1.style.fontSize = '24px';
+	    td1.style.fontSize = '13px';
 	    td1.style.backgroundColor = awayColour
         td1.style.fontWeight = 'bold';
         td1.style.width = '50%'; 
@@ -1172,7 +1030,7 @@ console.log(team);
 		td2.style.lineHeight = '1.1'; 
 		td2.style.whiteSpace = 'nowrap';
 		td2.style.backgroundColor = awayColour 
-	    td2.style.fontSize = '24px';
+	    td2.style.fontSize = '13px';
         td2.style.fontWeight = 'bold';
         td2.style.width = '50%'; 
         td2.innerHTML =  'PTS'; 
@@ -1192,7 +1050,7 @@ console.log(team);
         td1.style.lineHeight = '1.1'; 
 		td1.style.whiteSpace = 'nowrap'; 
 		td1.style.backgroundColor = awayColour 
-	    td1.style.fontSize = '24px';
+	    td1.style.fontSize = '13px';
         td1.style.fontWeight = 'bold';
         td1.style.width = '50%'; 
         td1.innerHTML =(team[i] && team[i].split(',')[4]) || "<br>"; 
@@ -1206,7 +1064,7 @@ console.log(team);
         td2.style.lineHeight = '1.1'; 
 		td2.style.whiteSpace = 'nowrap'; 
 		td2.style.backgroundColor = awayColour 
-	    td2.style.fontSize = '24px';
+	    td2.style.fontSize = '13px';
         td2.style.fontWeight = 'bold';
         td2.style.width = '50%'; 
         td2.innerHTML = (team[i] && team[i].split(',')[5]) || "<br>"; 
@@ -1221,7 +1079,7 @@ console.log(team);
     // Table 2: Single cell
     var table2 = document.createElement('table');
     table2.id = 'table2';
-    table2.style.height = '400px';
+    table2.style.height = '350px';
     table2.style.width = "4%";
     table2.style.marginTop = "-10px";
     table2.style.border = "4px solid #F0F0F0";
@@ -1232,7 +1090,7 @@ console.log(team);
 
     var td2 = document.createElement('td');
     td2.style.textAlign = 'center';
-    td2.style.fontSize = '24px';
+    td2.style.fontSize = '13px';
     td2.style.fontWeight = 'bold';
     td2.style.color = awayTextColour;
     td2.style.backgroundColor = awayColour 
@@ -1250,7 +1108,7 @@ console.log(team);
     table3.id = 'table3';
     table3.style.height = tableHeight;
     table3.style.width = "40%";
-    table3.style.marginTop = "-10px";
+    table3.style.marginTop = "5px";
     table3.style.borderColor = "transparent";
     table3.className = 'table table-bordered fixed-size-table';
 
@@ -1266,7 +1124,7 @@ console.log(team);
     th3_1.style.textAlign = 'center';
     th3_1.style.lineHeight = '1.3'; 
 	th3_1.style.whiteSpace = 'nowrap'; 
-    th3_1.style.fontSize = '24px';
+    th3_1.style.fontSize = '13px';
     th3_1.style.backgroundColor = awayColour 
     th3_1.style.fontWeight = 'bold';
     th3_1.style.width = '100%';
@@ -1284,7 +1142,7 @@ console.log(team);
     th3_2.style.textAlign = 'center';
     th3_2.style.lineHeight = '1.1'; 
 	th3_2.style.whiteSpace = 'nowrap'; 
-    th3_2.style.fontSize = '24px';
+    th3_2.style.fontSize = '13px';
     th3_2.style.fontWeight = 'bold';
     th3_2.style.backgroundColor = awayColour
     th3_2.style.width = '33.33%'; 
@@ -1299,7 +1157,7 @@ console.log(team);
     th3_3.style.textAlign = 'center';
     th3_3.style.lineHeight = '1.1'; 
 	th3_3.style.whiteSpace = 'nowrap'; 
-    th3_3.style.fontSize = '24px';
+    th3_3.style.fontSize = '13px';
     th3_3.style.fontWeight = 'bold';
     th3_3.style.backgroundColor = awayColour
     th3_3.style.width = '33.33%'; 
@@ -1338,7 +1196,7 @@ console.log(team);
         td3_1.style.lineHeight = '1.1'; 
 		td3_1.style.whiteSpace = 'nowrap'; 
 		td3_1.style.backgroundColor = awayColour
-	    td3_1.style.fontSize = '24px';
+	    td3_1.style.fontSize = '13px';
         td3_1.style.fontWeight = 'bold';
         td3_1.style.width = '33.33%';
         td3_1.setAttribute('colspan', 3);
@@ -1372,7 +1230,7 @@ console.log(team);
 	th4_1.style.lineHeight = '1.3'; 
 	th4_1.style.whiteSpace = 'nowrap';
 	th4_1.style.backgroundColor = awayColour 
-    th4_1.style.fontSize = '24px';
+    th4_1.style.fontSize = '13px';
 	th4_1.style.fontWeight = 'bold';
 	th4_1.style.width = '100%';
 	th4_1.setAttribute('colspan', 3);
@@ -1390,7 +1248,7 @@ console.log(team);
 	th4_2.style.lineHeight = '1.1'; 
 	th4_2.style.whiteSpace = 'nowrap';
 	th4_2.style.backgroundColor = awayColour 
-    th4_2.style.fontSize = '24px';
+    th4_2.style.fontSize = '13px';
 	th4_2.style.fontWeight = 'bold';
 	th4_2.style.width = '33.33%';
 	th4_2.innerHTML = 'COUNT';
@@ -1403,7 +1261,7 @@ console.log(team);
 	th4_3.style.textAlign = 'center';
 	th4_3.style.lineHeight = '1.1'; 
 	th4_3.style.whiteSpace = 'nowrap'; 
-    th4_3.style.fontSize = '24px';
+    th4_3.style.fontSize = '13px';
     th4_3.style.backgroundColor = awayColour
 	th4_3.style.fontWeight = 'bold';
 	th4_3.style.width = '33.33%';
@@ -1419,7 +1277,7 @@ console.log(team);
 	th4_4.style.lineHeight = '1.1'; 
 	th4_4.style.whiteSpace = 'nowrap';
 	th4_4.style.fontWeight = 'bold'; 
-    th4_4.style.fontSize = '24px';
+    th4_4.style.fontSize = '13px';
 	th4_4.style.width = '33.33%';
 	th4_4.style.backgroundColor = awayColour
 	th4_4.innerHTML = 'PTS';
@@ -1441,7 +1299,7 @@ console.log(team);
 	    td4_1.style.textAlign = 'center';
 		td4_1.style.lineHeight = '1.1'; 
 		td4_1.style.whiteSpace = 'nowrap'; 
-	    td4_1.style.fontSize = '24px';
+	    td4_1.style.fontSize = '13px';
 	    td4_1.style.fontWeight = 'bold';
 	    td4_1.style.width = '33.33%';
 	    
@@ -1458,7 +1316,7 @@ console.log(team);
 	    td4_2.style.textAlign = 'center';
 	    td4_2.style.lineHeight = '1.1'; 
 		td4_2.style.whiteSpace = 'nowrap'; 
-	    td4_2.style.fontSize = '24px';
+	    td4_2.style.fontSize = '13px';
 	    td4_2.style.fontWeight = 'bold';
 	    td4_2.style.width = '33.33%';
 	    td4_2.innerHTML =(team[i] && team[i].split(',')[2]) || "<br>" 
@@ -1474,7 +1332,7 @@ console.log(team);
 	    td4_3.style.textAlign = 'center';
 	    td4_3.style.lineHeight = '1.1'; 
 		td4_3.style.whiteSpace = 'nowrap'; 
-	    td4_3.style.fontSize = '24px';
+	    td4_3.style.fontSize = '13px';
 	    td4_3.style.fontWeight = 'bold';
 	    td4_3.style.width = '33.33%';
 	    td4_3.innerHTML = (team[i] && team[i].split(',')[3]) || "<br>" 
@@ -1501,7 +1359,7 @@ console.log(team);
 
     var td5 = document.createElement('td');
     td5.style.textAlign = 'center';
-    td5.style.fontSize = '21px';
+    td5.style.fontSize = '13px';
     td5.style.fontWeight = 'bold';
     td5.style.color = 'black';
     td5.style.lineHeight = '1'; 
