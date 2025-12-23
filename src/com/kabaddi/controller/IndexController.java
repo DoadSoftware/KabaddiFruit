@@ -95,35 +95,12 @@ public class IndexController
 				selectedmatch), EventFile.class);
 
 		session_match.setEvents(session_event.getEvents());
-		// JSON file for match
-//		session_match.setApi_Match(new ObjectMapper().readValue(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.DESTINATION_DIRECTORY +session_match.getMatchId() +"-in-match" 
-//				+ KabaddiUtil.JSON_EXTENSION), Api_Match.class));
 		session_selected_broadcaster = selectBroadcaster;
 		
-		switch (selectBroadcaster.toUpperCase()) {
-		case "GIPKL":
-			session_match.getApi_Match().setHomeTeam(session_match.getHomeTeam());
-		    session_match.getApi_Match().setAwayTeam(session_match.getAwayTeam());
-			 
-			KabaddiFunctions.setMatch(session_match.getApi_Match(), session_match);
-			
-			break;
-		default:
-			KabaddiFunctions.setMatchApi(session_match.getApi_Match(), session_match);
-			if(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.DESTINATION_DIRECTORY + "pre-match_2m" + KabaddiUtil.JSON_EXTENSION).exists()) {
-				ObjectMapper objectMapper = new ObjectMapper();
-				
-				try {
-		            File file = new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.DESTINATION_DIRECTORY + "pre-match_2m" + KabaddiUtil.JSON_EXTENSION);
-		            List<Api_pre_match> apiPreMatchList = objectMapper.readValue(file, new TypeReference<List<Api_pre_match>>() {});
-		            session_match.setApi_PreMatch(apiPreMatchList);
-		            
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		        }
-			}
-			break;
-		}
+		session_match.getApi_Match().setHomeTeam(session_match.getHomeTeam());
+	    session_match.getApi_Match().setAwayTeam(session_match.getAwayTeam());
+		KabaddiFunctions.setMatch(session_match.getApi_Match(), session_match);
+		
 		model.addAttribute("session_match", session_match);
 		model.addAttribute("session_selected_broadcaster", session_selected_broadcaster);
 		model.addAttribute("session_selected_broadcaster", session_Configurations.getBroadcaster());
@@ -164,29 +141,10 @@ public class IndexController
 			    System.err.println("Clock JSON file does not exist: " + new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.CLOCK_JSON).getAbsolutePath());
 			}
 			
-			switch (session_selected_broadcaster.toUpperCase()) {
-			case "GIPKL":
-				session_match.getApi_Match().setHomeTeam(session_match.getHomeTeam());
-			    session_match.getApi_Match().setAwayTeam(session_match.getAwayTeam());
-				KabaddiFunctions.setMatch(session_match.getApi_Match(), session_match);
-				
-				break;
-			default:
-				KabaddiFunctions.setMatchApi(session_match.getApi_Match(), session_match);
-				if(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.DESTINATION_DIRECTORY + "pre-match_2m" + KabaddiUtil.JSON_EXTENSION).exists()) {
-					ObjectMapper objectMapper = new ObjectMapper();
-					
-					try {
-			            File file = new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.DESTINATION_DIRECTORY + "pre-match_2m" + KabaddiUtil.JSON_EXTENSION);
-			            List<Api_pre_match> apiPreMatchList = objectMapper.readValue(file, new TypeReference<List<Api_pre_match>>() {});
-			            session_match.setApi_PreMatch(apiPreMatchList);
-			            
-			        } catch (IOException e) {
-			            e.printStackTrace();
-			        }
-				}
-				break;
-			}
+			session_match.getApi_Match().setHomeTeam(session_match.getHomeTeam());
+		    session_match.getApi_Match().setAwayTeam(session_match.getAwayTeam());
+			KabaddiFunctions.setMatch(session_match.getApi_Match(), session_match);
+			
 			return JSONObject.fromObject(session_match).toString();
 		default:
 			return JSONObject.fromObject(session_match).toString();
